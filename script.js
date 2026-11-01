@@ -52,10 +52,10 @@ const heroSlider = document.querySelector('[data-hero-slider]');
 if (heroSlider) {
   const slides = [...heroSlider.querySelectorAll('.hero-slide')];
   const featured = [
-    { title: 'Ene Misrak Residence', slug: 'ene-misrak' },
+    { title: 'Ene Misrak Mixed Use', slug: 'ene-misrak' },
     { title: 'Hope Haven Youth Center', slug: 'hope-haven' },
-    { title: 'Bihere Tsige St. Mary Church', slug: 'bihere-tsige' },
-    { title: 'EBO BizzTech Office', slug: 'ebo-bizztech' }
+    { title: 'Divine Entrance Church Gate', slug: 'divine-entrance' },
+    { title: 'Smart Workspace Tech Office', slug: 'ebo-bizztech' }
   ];
   const title = heroSlider.querySelector('[data-hero-title]');
   const link = heroSlider.querySelector('[data-hero-link]');
