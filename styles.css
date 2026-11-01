@@ -433,6 +433,7 @@ body { min-width: 0; }
 .services-strip > .shell > *, .contact-panel > .shell > *,
 .contact-grid > *, .service-card > *, .service-desc > * { min-width: 0; }
 .hero-intro h1 { font-size: clamp(45px, 4.8vw, 99px); }
+.page-intro h1 { font-size: clamp(52px, 6.6vw, 110px); }
 .display { overflow-wrap: normal; }
 .project-info > div { min-width: 0; }
 .project-info h3, .project-info p { overflow-wrap: break-word; }
