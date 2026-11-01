@@ -359,3 +359,45 @@ body { background: var(--paper); }
   .contact-grid > div { padding-block: 58px; }
   .contact-location { min-height: 470px; }
 }
+
+/* Ambient motion: architectural, slow, and never required to read the page. */
+.featured, .services-strip, .studio-grid, .contact-panel, .page-intro { isolation: isolate; }
+.featured::before, .services-strip::before, .studio-grid::before, .contact-panel::before { position: absolute; z-index: 0; content: ''; pointer-events: none; }
+.featured { position: relative; background-image: radial-gradient(circle at 92% 5%, rgba(255,255,255,.48), transparent 19%), radial-gradient(circle at 12% 80%, rgba(255,255,255,.32), transparent 24%); }
+.services-strip { position: relative; overflow: hidden; }
+.services-strip::before { top: 0; right: 0; bottom: 0; width: min(38%, 570px); opacity: .18; background: linear-gradient(90deg, var(--ink), transparent), url('assets/city-workplace.webp') center/cover; mix-blend-mode: screen; }
+.services-strip > .shell { position: relative; z-index: 1; }
+.studio-grid { position: relative; overflow: hidden; }
+.studio-grid::before { top: 0; right: 0; bottom: 0; width: min(34%, 520px); opacity: .13; background: linear-gradient(90deg, var(--ink), transparent), url('assets/airport-office.webp') center/cover; mix-blend-mode: screen; }
+.studio-grid > * { position: relative; z-index: 1; }
+.contact-panel::before { inset: 0; opacity: .25; background-image: linear-gradient(90deg, transparent 49.85%, var(--ink) 50%, transparent 50.15%), linear-gradient(0deg, transparent 49.85%, var(--ink) 50%, transparent 50.15%); background-size: 98px 98px; }
+.page-intro::after { position: absolute; z-index: 0; width: min(45vw, 640px); height: min(45vw, 640px); border: 1px solid rgba(215,231,243,.22); border-radius: 50%; content: ''; pointer-events: none; transform: translate(calc(-22% + var(--page-progress, 0) * 28%), 32%); }
+.page-intro > * { z-index: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .has-motion .hero-intro::before { animation: blueprint-drift 22s linear infinite; }
+  .has-motion .hero-intro::after { position: absolute; z-index: 0; right: -18vw; bottom: -24vw; width: 52vw; height: 52vw; border: 1px solid rgba(215,231,243,.25); border-radius: 50%; content: ''; pointer-events: none; animation: orbit-drift 16s ease-in-out infinite alternate; }
+  .has-motion .page-intro::before { animation: blueprint-breathe 14s ease-in-out infinite alternate; }
+  .has-motion .page-intro::after { animation: halo-drift 18s ease-in-out infinite alternate; }
+  .has-motion .featured { animation: surface-shift 16s ease-in-out infinite alternate; }
+  .has-motion .services-strip::before { animation: image-breathe 15s ease-in-out infinite alternate; }
+  .has-motion .studio-grid::before { animation: image-breathe 18s ease-in-out -5s infinite alternate; }
+  .has-motion .contact-panel::before { animation: grid-glide 20s linear infinite; }
+  .has-motion .project-image::after { animation: shade-breathe 9s ease-in-out infinite alternate; }
+  .has-motion .project-card:hover .project-mark { animation: arrow-turn .45s cubic-bezier(.2,.8,.2,1) both; }
+}
+
+@keyframes blueprint-drift { to { background-position: 54px 54px, 54px 54px; } }
+@keyframes blueprint-breathe { to { opacity: .55; background-position: 0 0, 0 25%; } }
+@keyframes orbit-drift { to { transform: translate(-8%, -6%) scale(1.1); } }
+@keyframes halo-drift { to { transform: translate(calc(-4% + var(--page-progress, 0) * 30%), 12%) scale(1.08); } }
+@keyframes surface-shift { to { background-position: 6% 8%, 95% 92%; } }
+@keyframes image-breathe { to { transform: scale(1.09); opacity: .2; } }
+@keyframes grid-glide { to { background-position: 98px 98px, 98px 98px; } }
+@keyframes shade-breathe { to { opacity: .64; } }
+@keyframes arrow-turn { 50% { transform: rotate(42deg) scale(1.14); } 100% { transform: rotate(0) scale(1); } }
+
+@media (max-width: 640px) {
+  .services-strip::before, .studio-grid::before { width: 68%; opacity: .09; }
+  .page-intro::after { width: 80vw; height: 80vw; }
+}

@@ -51,13 +51,23 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('has-motion');
   const scrollImages = [...document.querySelectorAll('.hero-visual img, .studio-photo img, .project-hero img')];
   const sections = [...document.querySelectorAll('main > section:not(.hero)')];
-  const updateScrollImages = () => scrollImages.forEach((image) => {
-    const rect = image.parentElement.getBoundingClientRect();
-    const shift = Math.max(-16, Math.min(16, (window.innerHeight / 2 - (rect.top + rect.height / 2)) * .045));
-    image.style.setProperty('--scroll-shift', `${shift}px`);
-  });
-  updateScrollImages();
-  window.addEventListener('scroll', updateScrollImages, { passive: true });
+  let ticking = false;
+  const updateMotion = () => {
+    scrollImages.forEach((image) => {
+      const rect = image.parentElement.getBoundingClientRect();
+      const shift = Math.max(-16, Math.min(16, (window.innerHeight / 2 - (rect.top + rect.height / 2)) * .045));
+      image.style.setProperty('--scroll-shift', `${shift}px`);
+    });
+    const availableScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    document.documentElement.style.setProperty('--page-progress', String(Math.min(1, window.scrollY / availableScroll)));
+    ticking = false;
+  };
+  const requestMotionUpdate = () => {
+    if (!ticking) { requestAnimationFrame(updateMotion); ticking = true; }
+  };
+  updateMotion();
+  window.addEventListener('scroll', requestMotionUpdate, { passive: true });
+  window.addEventListener('resize', requestMotionUpdate, { passive: true });
   const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.target.classList.toggle('is-inview', entry.isIntersecting)), { threshold: .08 });
   sections.forEach((section) => observer.observe(section));
 }
