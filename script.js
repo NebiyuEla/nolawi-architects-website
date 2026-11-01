@@ -1,8 +1,18 @@
 const favicon = document.querySelector('link[rel~="icon"]') || document.createElement('link');
 favicon.rel = 'icon';
 favicon.type = 'image/png';
-favicon.href = 'assets/nolawi-icon.png';
+favicon.href = 'assets/nolawi-favicon.png';
 if (!favicon.parentElement) document.head.append(favicon);
+
+document.querySelectorAll('.site-header').forEach((header) => {
+  if (header.querySelector('.header-title')) return;
+  const title = document.createElement('a');
+  title.className = 'header-title';
+  title.href = 'index.html';
+  title.setAttribute('aria-label', 'Nolawi Architects home');
+  title.innerHTML = 'NOLAWI <span>ARCHITECTS</span>';
+  header.insertBefore(title, header.querySelector('.site-nav'));
+});
 
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#site-nav');
