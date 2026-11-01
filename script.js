@@ -1,3 +1,9 @@
+const favicon = document.querySelector('link[rel~="icon"]') || document.createElement('link');
+favicon.rel = 'icon';
+favicon.type = 'image/png';
+favicon.href = 'assets/nolawi-icon.png';
+if (!favicon.parentElement) document.head.append(favicon);
+
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#site-nav');
 if (menuButton && navigation) {

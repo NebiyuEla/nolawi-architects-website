@@ -401,3 +401,20 @@ body { background: var(--paper); }
   .services-strip::before, .studio-grid::before { width: 68%; opacity: .09; }
   .page-intro::after { width: 80vw; height: 80vw; }
 }
+
+/* Brand and service symbols */
+.brand { position: relative; width: 180px; height: 70px; padding: 0; background: transparent; }
+.brand::before { position: absolute; inset: 0; content: ''; background: var(--white); -webkit-mask: url('assets/nolawi-wordmark.png') center / contain no-repeat; mask: url('assets/nolawi-wordmark.png') center / contain no-repeat; }
+.brand img { opacity: 0; }
+.service-title::before { display: block; flex: 0 0 auto; width: clamp(52px, 5vw, 72px); height: clamp(52px, 5vw, 72px); content: ''; background-repeat: no-repeat; background-position: center; background-size: 82%; }
+#design .service-title::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%2310100f' stroke-width='2.4'%3E%3Cpath d='M10 10h44v44H10zM10 32h44M32 10v44M20 20h24v24H20z'/%3E%3C/svg%3E"); }
+#build .service-title::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%2310100f' stroke-width='2.4' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M8 53h48M13 42 32 11l19 31M20 42l12-20 12 20M32 11v42'/%3E%3C/svg%3E"); }
+#consult .service-title::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%2310100f' stroke-width='2.4'%3E%3Ccircle cx='32' cy='32' r='20'/%3E%3Cpath d='m40 24-6 14-14 6 6-14 14-6ZM32 8v8m0 32v8M8 32h8m32 0h8'/%3E%3C/svg%3E"); }
+.service-card:nth-child(2) .service-title::before { filter: invert(1); }
+.service-card .service-title { align-items: center; }
+
+@media (max-width: 640px) {
+  .brand { width: 144px; height: 58px; }
+  .brand::before { background: var(--ink); }
+  .service-title::before { width: 47px; height: 47px; }
+}
