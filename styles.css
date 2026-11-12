@@ -773,3 +773,8 @@ body { background:var(--paper); }
 .hero-visual::after { inset:0; background:linear-gradient(90deg,rgba(10,16,13,.83),rgba(10,16,13,.12) 80%),linear-gradient(0deg,rgba(10,16,13,.65),transparent 35%); }
 .statement .section-no { color:#47745a; }
 @media (max-width:640px) { .hero-intro { background:transparent; } .hero-visual::after { background:linear-gradient(0deg,rgba(10,16,13,.82),rgba(10,16,13,.3)); } }
+.contact-grid .section-no { color:#47745a; }
+.site-nav .nav-cta[aria-current='page'] { color:#151c18; }
+.page-intro .eyebrow { font:700 12px/1.3 var(--sans); letter-spacing:.13em; }
+@media (min-width:961px) { .page-intro { min-height:480px; padding-block:100px 75px; } }
+@media (max-width:640px) { .filter-bar { gap:4px; } .filter-button { font-size:11px; padding:10px 8px; } }
