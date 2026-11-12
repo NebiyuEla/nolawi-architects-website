@@ -689,3 +689,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid #587c95; outline-offs
 .gallery-grid img { display: block; }
 @media (max-width: 960px) { .site-header { background: #191c1b; } }
 @media (max-width: 640px) { .gallery-grid a:nth-child(n) { grid-column: auto; } .project-gallery h2 { font-size: clamp(38px, 10vw, 60px); } }
+
+@media (max-width: 960px) {
+  .hero-intro { overflow: hidden; }
+  .hero-visual, .hero-slides { min-width: 0; max-width: 100%; }
+}
