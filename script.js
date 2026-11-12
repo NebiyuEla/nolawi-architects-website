@@ -217,7 +217,8 @@ if (detailPage) {
     section.append(heading);
     const grid = document.createElement('div');
     grid.className = 'gallery-grid';
-    files.forEach((file, index) => {
+    files.forEach((originalFile, index) => {
+      const file = originalFile === 'assets/galleries/06/005.heic' ? 'assets/galleries/06/005.webp' : originalFile;
       const link = document.createElement('a');
       link.href = file;
       if (/\.(jpe?g|png|webp|gif)$/i.test(file)) {
