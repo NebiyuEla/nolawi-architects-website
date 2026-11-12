@@ -204,6 +204,43 @@ if (detailPage) {
   detailPage.querySelector('[data-project-detail-text]').textContent = project.detail;
   const image = detailPage.querySelector('[data-project-image]'); image.src = project.image; image.alt = project.alt;
   detailPage.querySelector('[data-project-inquiry]').href = `contact.html?project=${encodeURIComponent(project.title)}`;
+  fetch('galleries.json').then((response) => {
+    if (!response.ok) throw new Error('Gallery unavailable');
+    return response.json();
+  }).then((galleries) => {
+    const files = galleries[project.number] || [];
+    const section = document.createElement('section');
+    section.className = 'project-gallery';
+    const heading = document.createElement('h2');
+    heading.className = 'display';
+    heading.textContent = 'Project gallery';
+    section.append(heading);
+    const grid = document.createElement('div');
+    grid.className = 'gallery-grid';
+    files.forEach((file, index) => {
+      const link = document.createElement('a');
+      link.href = file;
+      if (/\.(jpe?g|png|webp|gif)$/i.test(file)) {
+        const image = document.createElement('img');
+        image.src = file;
+        image.loading = 'lazy';
+        image.alt = `${project.title}, view ${index + 1}`;
+        link.append(image);
+      } else {
+        link.className = 'gallery-download';
+        link.textContent = `Download project file ${index + 1}`;
+        link.setAttribute('download', '');
+      }
+      grid.append(link);
+    });
+    section.append(grid);
+    detailPage.append(section);
+  }).catch(() => {
+    const message = document.createElement('p');
+    message.className = 'project-gallery';
+    message.textContent = 'The project gallery could not be loaded. Please refresh the page.';
+    detailPage.append(message);
+  });
 }
 
 const projectName = new URLSearchParams(location.search).get('project');

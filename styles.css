@@ -658,3 +658,34 @@ a:focus-visible, button:focus-visible { outline: 2px solid #587c95; outline-offs
   .header-title { font-size: 9px; letter-spacing: .08em; }
   .header-title span { font-size: 7px; letter-spacing: .08em; }
 }
+
+.project-gallery { padding: clamp(55px, 8vw, 110px) var(--edge); background: var(--white); }
+.project-gallery h2 { margin-bottom: 35px; font-size: clamp(42px, 5vw, 72px); }
+.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); }
+.gallery-grid a { display: block; min-width: 0; overflow: hidden; background: #e9e5de; }
+.gallery-grid img { width: 100%; height: auto; transition: transform .4s ease; }
+.gallery-grid a:hover img { transform: scale(1.025); }
+.gallery-download { padding: 30px; text-decoration: underline; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .gallery-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Portfolio refresh */
+:root { --paper: #f1efeb; --white: #fbfaf8; --ink: #191c1b; --clay: #65786f; --line: #d0d2cc; }
+.site-header { background: rgba(25,28,27,.97); }
+.hero-intro { background: #202a27; }
+.hero-intro h1 em, .page-intro h1 em { color: #c8d7c8; }
+.hero-intro .eyebrow, .page-intro .eyebrow { color: #c8d7c8; }
+.featured { background-color: #e1e8df; }
+.project-image { border: 0; box-shadow: none; }
+.project-card:hover .project-image img { transform: scale(1.035); }
+.project-info { border-top: 0; }
+.project-mark { background: #202a27; color: white; }
+.page-intro { background: #202a27; }
+.contact-panel { background: #d5e0d3; }
+.service-card { background: #e1e8df; }
+.service-card:nth-child(3) { background: #dedbd1; }
+.all-projects .project-image { box-shadow: none; }
+.gallery-grid { align-items: start; }
+.gallery-grid a:nth-child(5n+1) { grid-column: 1 / -1; }
+.gallery-grid img { display: block; }
+@media (max-width: 960px) { .site-header { background: #191c1b; } }
+@media (max-width: 640px) { .gallery-grid a:nth-child(n) { grid-column: auto; } .project-gallery h2 { font-size: clamp(38px, 10vw, 60px); } }
