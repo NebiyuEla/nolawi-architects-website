@@ -1,0 +1,213 @@
+.contact-page {
+  --contact-ink: #191c18;
+  --contact-muted: #53584d;
+  --contact-line: #cfccbf;
+  --contact-paper: #f5f2eb;
+  --contact-tint: #e4e8d1;
+  --contact-rust: #904c36;
+  padding-bottom: clamp(4.5rem, 9vw, 9rem);
+  background: var(--contact-paper);
+  color: var(--contact-ink);
+}
+
+.contact-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(16rem, 1fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-block: clamp(3.5rem, 7vw, 7.5rem) clamp(2rem, 5vw, 4.5rem);
+  border-bottom: 1px solid var(--contact-line);
+}
+
+.contact-intro .eyebrow {
+  margin-bottom: 1.2rem;
+  color: var(--contact-rust);
+}
+
+.contact-intro h1 {
+  font-size: clamp(4.25rem, 8.5vw, 8.75rem);
+  line-height: .88;
+  text-wrap: balance;
+}
+
+.contact-intro h1 em {
+  color: var(--contact-rust);
+}
+
+.contact-intro-copy {
+  max-width: 29rem;
+  padding-bottom: .4rem;
+}
+
+.contact-intro-copy p:first-child {
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.4;
+}
+
+.contact-intro-copy p + p {
+  margin-top: .85rem;
+  color: var(--contact-muted);
+  line-height: 1.6;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 7vw, 7rem);
+  padding-top: clamp(2.25rem, 5vw, 4.5rem);
+}
+
+.contact-methods h2,
+.contact-visit h2 {
+  font-size: clamp(2.5rem, 4.25vw, 4.25rem);
+  line-height: .98;
+}
+
+.contact-details {
+  margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+  border-top: 1px solid var(--contact-line);
+}
+
+.contact-detail {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 1fr) minmax(0, 3fr);
+  align-items: baseline;
+  gap: .45rem clamp(.5rem, 3vw, 2rem);
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--contact-line);
+}
+
+.contact-detail dt {
+  color: var(--contact-muted);
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.contact-detail dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.contact-detail a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+
+.contact-detail a:hover {
+  color: var(--contact-rust);
+  text-decoration-color: currentColor;
+}
+
+.contact-detail--email {
+  display: block;
+  padding-block: 1.15rem 1.4rem;
+}
+
+.contact-email-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .65rem;
+  margin-top: .65rem;
+  font-size: clamp(1rem, 2.5vw, 2.15rem);
+  line-height: 1.25;
+  letter-spacing: -.04em;
+  overflow-wrap: anywhere;
+}
+
+.contact-email-arrow {
+  display: inline-grid;
+  flex: 0 0 2.55rem;
+  width: 2.55rem;
+  height: 2.55rem;
+  place-items: center;
+  border: 1px solid var(--contact-line);
+  border-radius: 50%;
+  font-size: 1.15rem;
+}
+
+.contact-email-link:hover .contact-email-arrow {
+  border-color: var(--contact-rust);
+}
+
+.contact-phone {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .1rem 1.4rem;
+}
+
+.contact-phone a {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.contact-visit {
+  background: var(--contact-tint);
+}
+
+.contact-visit-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 22rem;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 56%;
+}
+
+.contact-visit-content {
+  padding: clamp(1.55rem, 3.5vw, 3.5rem);
+}
+
+.contact-visit address {
+  margin-top: 1rem;
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.contact-visit-content p {
+  margin-top: .8rem;
+  color: var(--contact-muted);
+  font-size: .87rem;
+}
+
+.contact-visit .button {
+  margin-top: 1.45rem;
+}
+
+@media (max-width: 50rem) {
+  .contact-intro,
+  .contact-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-intro {
+    gap: 1.4rem;
+  }
+
+  .contact-intro h1 {
+    max-width: 11ch;
+    font-size: clamp(3.8rem, 11vw, 6rem);
+    text-wrap: initial;
+  }
+
+  .contact-email-link {
+    font-size: clamp(1.05rem, 5vw, 1.75rem);
+  }
+}
+
+@media (max-width: 23rem) {
+  .contact-intro h1 {
+    font-size: 3.35rem;
+  }
+
+  .contact-detail {
+    grid-template-columns: minmax(4.2rem, .75fr) minmax(0, 2fr);
+  }
+}

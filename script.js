@@ -1,50 +1,33 @@
-const favicon = document.querySelector('link[rel~="icon"]') || document.createElement('link');
-favicon.rel = 'icon';
-favicon.type = 'image/png';
-favicon.href = 'assets/nolawi-favicon.png';
-if (!favicon.parentElement) document.head.append(favicon);
-
-const skipLink = document.createElement('a');
-skipLink.className = 'skip-link';
-skipLink.href = '#main-content';
-skipLink.textContent = 'Skip to main content';
-document.body.prepend(skipLink);
-const mainContent = document.querySelector('main');
-if (mainContent && !mainContent.id) mainContent.id = 'main-content';
-
-document.querySelectorAll('.site-header').forEach((header) => {
-  const aboutLink = header.querySelector('a[href="studio.html"]');
-  if (aboutLink) aboutLink.textContent = 'About Us';
-  if (header.querySelector('.header-title')) return;
-  const title = document.createElement('a');
-  title.className = 'header-title';
-  title.href = 'index.html';
-  title.setAttribute('aria-label', 'Nolawi Architects home');
-  title.innerHTML = 'NOLAWI <span>ARCHITECTS</span>';
-  header.insertBefore(title, header.querySelector('.site-nav'));
-});
-
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#site-nav');
+
 if (menuButton && navigation) {
+  const header = menuButton.closest('.site-header');
+  const label = menuButton.querySelector('.menu-label');
   const setMenuOpen = (open) => {
     menuButton.setAttribute('aria-expanded', String(open));
-    menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    label.textContent = open ? 'Close' : 'Menu';
     navigation.classList.toggle('is-open', open);
-    document.body.classList.toggle('menu-open', open);
   };
+
+  header.classList.add('nav-enhanced');
+  menuButton.hidden = false;
   menuButton.addEventListener('click', () => setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true'));
-  navigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
+  navigation.addEventListener('click', (event) => {
+    if (event.target.closest('a')) setMenuOpen(false);
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
       setMenuOpen(false);
       menuButton.focus();
     }
   });
-  document.addEventListener('pointerdown', (event) => {
-    if (menuButton.getAttribute('aria-expanded') === 'true' && !event.target.closest('.site-header')) setMenuOpen(false);
-  });
-  window.matchMedia('(min-width: 961px)').addEventListener('change', () => setMenuOpen(false));
+  for (const eventName of ['pointerdown', 'focusin']) {
+    document.addEventListener(eventName, (event) => {
+      if (!header.contains(event.target)) setMenuOpen(false);
+    });
+  }
+  window.matchMedia('(max-width: 760px)').addEventListener('change', () => setMenuOpen(false));
 }
 
 const projects = [
@@ -154,228 +137,310 @@ const projectLongDetails = {
   ]
 };
 
-const generalObjectives = document.querySelector('.objective-columns > div:first-child ul');
-if (generalObjectives && !generalObjectives.textContent.includes('strong reputation')) {
-  const objective = document.createElement('li');
-  objective.textContent = 'Establish a strong reputation as a reliable, competitive and client-focused consultancy.';
-  generalObjectives.append(objective);
-}
-
-/* A single hero controller shared by desktop, tablet and mobile. The first
-   project renders without JavaScript; the remaining images load on demand. */
-const heroSlider = document.querySelector('[data-hero-slider]');
-if (heroSlider) {
-  const slides = [...heroSlider.querySelectorAll('.hero-slide')];
-  const featured = [
-    { title: 'Ene Misrak Mixed Use', slug: 'ene-misrak' },
-    { title: 'Hope Haven Youth Center', slug: 'hope-haven' },
-    { title: 'Divine Entrance Church Gate', slug: 'divine-entrance' },
-    { title: 'Smart Workspace Tech Office', slug: 'ebo-bizztech' }
-  ];
-  const title = heroSlider.querySelector('[data-hero-title]');
-  const link = heroSlider.querySelector('[data-hero-link]');
-  const counter = heroSlider.querySelector('[data-hero-count]');
-  const previous = heroSlider.querySelector('[data-hero-prev]');
-  const next = heroSlider.querySelector('[data-hero-next]');
-  const toggle = heroSlider.querySelector('[data-hero-toggle]');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const hero = document.querySelector('[data-hero-slider]');
+if (hero) {
+  const slides = [...hero.querySelectorAll('.hero-slide')];
+  const title = hero.querySelector('[data-hero-title]');
+  const link = hero.querySelector('[data-hero-link]');
+  const toggle = hero.querySelector('[data-hero-motion]');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let current = 0;
-  let timer = null;
-  let requestId = 0;
-  let userPaused = false;
-  let focusPaused = false;
+  let timer;
   let inView = true;
-  const intervalMs = 6500;
+  let paused = false;
 
-  const prepare = (index) => {
+  const canRotate = () => inView && !paused && !document.hidden && !reducedMotion.matches
+    && !link.matches(':hover, :focus-within') && !toggle.matches(':focus');
+
+  const loadSlide = async (index) => {
     const image = slides[index];
-    if (!image) return;
-    const url = image.getAttribute('data-src');
-    if (url) {
-      image.loading = 'eager';
+    if (image.dataset.src) {
       image.fetchPriority = 'low';
-      image.src = url;
-      image.removeAttribute('data-src');
+      image.src = image.dataset.src;
+      delete image.dataset.src;
     }
-  };
-  const shouldRun = () => !userPaused && !focusPaused && inView && !document.hidden && !reducedMotion.matches;
-  const restart = () => {
-    if (timer !== null) window.clearInterval(timer);
-    timer = shouldRun() && slides.length > 1
-      ? window.setInterval(() => { void show((current + 1) % slides.length); }, intervalMs)
-      : null;
-  };
-  const show = async (nextIndex) => {
-    const candidate = (nextIndex + slides.length) % slides.length;
-    if (candidate === current) return;
-    const serial = ++requestId;
-    prepare(candidate);
-    const image = slides[candidate];
-    try { await image.decode(); } catch { /* Keep the current photo if loading failed. */ }
-    if (serial !== requestId || !image.naturalWidth) return;
-    slides.forEach((slide, index) => {
-      const active = index === candidate;
-      slide.classList.toggle('is-active', active);
-      slide.setAttribute('aria-hidden', String(!active));
-    });
-    current = candidate;
-    title.textContent = featured[current].title;
-    link.href = `project.html?slug=${encodeURIComponent(featured[current].slug)}`;
-    counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
-    heroSlider.dataset.slideNumber = `N / ${String(current + 1).padStart(2, '0')}`;
-    prepare((current + 1) % slides.length);
-    restart();
+    try {
+      await image.decode();
+      return image.naturalWidth > 0;
+    } catch {
+      return false;
+    }
   };
 
-  if (slides.length === featured.length && title && link && counter && previous && next && toggle) {
-    heroSlider.classList.add('is-ready');
-    prepare(1);
-    previous.addEventListener('click', () => { void show(current - 1); });
-    next.addEventListener('click', () => { void show(current + 1); });
-    toggle.addEventListener('click', () => {
-      userPaused = !userPaused;
-      toggle.textContent = userPaused ? 'Play' : 'Pause';
-      toggle.setAttribute('aria-label', userPaused ? 'Resume slideshow' : 'Pause slideshow');
-      toggle.setAttribute('aria-pressed', String(userPaused));
-      restart();
-    });
-    heroSlider.addEventListener('focusin', (event) => {
-      if (event.target.matches(':focus-visible')) { focusPaused = true; restart(); }
-    });
-    heroSlider.addEventListener('focusout', () => {
-      window.setTimeout(() => {
-        focusPaused = Boolean(heroSlider.querySelector(':focus-visible'));
-        restart();
-      }, 0);
-    });
-    let startX = null;
-    heroSlider.querySelector('.hero-slides').addEventListener('touchstart', (event) => {
-      if (event.touches.length === 1) startX = event.touches[0].clientX;
-    }, { passive: true });
-    heroSlider.querySelector('.hero-slides').addEventListener('touchend', (event) => {
-      if (startX === null || !event.changedTouches.length) return;
-      const delta = event.changedTouches[0].clientX - startX;
-      startX = null;
-      if (Math.abs(delta) > 55) void show(current + (delta < 0 ? 1 : -1));
-    }, { passive: true });
-    document.addEventListener('visibilitychange', restart);
-    reducedMotion.addEventListener('change', restart);
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        inView = entries[0].isIntersecting;
-        restart();
-      }, { threshold: .2 });
-      observer.observe(heroSlider);
+  const showNext = async () => {
+    for (let step = 1; step < slides.length; step++) {
+      const candidate = (current + step) % slides.length;
+      if (!await loadSlide(candidate)) continue;
+      if (!canRotate()) break;
+      const project = projects.find(({ slug }) => slug === slides[candidate].dataset.project);
+      if (!project) continue;
+      slides[current].classList.remove('is-active');
+      slides[candidate].classList.add('is-active');
+      current = candidate;
+      title.textContent = project.title;
+      link.href = 'project.html?slug=' + encodeURIComponent(project.slug);
+      break;
     }
-    restart();
+    schedule();
+  };
+
+  function schedule() {
+    clearTimeout(timer);
+    if (canRotate() && slides.length > 1) timer = setTimeout(showNext, 6500);
+  }
+
+  function updateMotionPreference() {
+    toggle.hidden = reducedMotion.matches || slides.length < 2;
+    schedule();
+  }
+
+  if (slides.length > 1) {
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      toggle.textContent = paused ? 'Resume background rotation' : 'Pause background rotation';
+      schedule();
+    });
+    [link, toggle].forEach((element) => {
+      element.addEventListener('focus', schedule);
+      element.addEventListener('blur', () => setTimeout(schedule, 0));
+    });
+    link.addEventListener('pointerenter', schedule);
+    link.addEventListener('pointerleave', schedule);
+    document.addEventListener('visibilitychange', schedule);
+    reducedMotion.addEventListener('change', updateMotionPreference);
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        schedule();
+      }, { threshold: .2 });
+      observer.observe(hero);
+    }
+    updateMotionPreference();
   }
 }
 
-function card(project) {
-  return `<a class="project-card" data-category="${project.category.toLowerCase()}" href="project.html?slug=${encodeURIComponent(project.slug)}"><div class="project-image"><img src="${project.image}" alt="${project.alt}" loading="lazy"><i class="project-mark">↗</i></div><div class="project-info"><div><h3>${project.title}</h3><p>${project.category} / ${project.place}</p></div><small>${project.number}</small></div></a>`;
+function projectHref(project) {
+  return `project.html?slug=${encodeURIComponent(project.slug)}`;
 }
 
-const featuredSlugs = ['hope-haven', 'ebo-bizztech', 'divine-entrance', 'outdoor-bar'];
-document.querySelectorAll('.featured .project-list .project-card').forEach((element, index) => {
-  const project = projects.find((item) => item.slug === featuredSlugs[index]);
-  if (!project) return;
-  element.href = `project.html?slug=${encodeURIComponent(project.slug)}`;
-  const image = element.querySelector('img');
-  if (image) { image.src = project.image; image.alt = project.alt; }
-  const title = element.querySelector('h3');
-  if (title) title.textContent = project.title;
-  const detail = element.querySelector('.project-info p');
-  if (detail) detail.textContent = `${project.category} / ${project.place}`;
-  const number = element.querySelector('.project-info small');
-  if (number) number.textContent = project.number;
-});
+function card(project, index) {
+  const loading = index < 3 ? 'eager' : 'lazy';
+  return `<a class="portfolio-card" data-category="${project.category.toLowerCase()}" href="${projectHref(project)}">
+    <span class="portfolio-card-media">
+      <img src="${project.image}" alt="" loading="${loading}" decoding="async">
+      <span class="portfolio-card-arrow" aria-hidden="true">↗</span>
+    </span>
+    <div class="portfolio-card-copy">
+      <p class="portfolio-card-meta"><span>${project.category}</span><span aria-hidden="true">·</span><span>${project.place}</span></p>
+      <h2 class="display portfolio-card-title">${project.title}</h2>
+    </div>
+  </a>`;
+}
 
-document.querySelectorAll('[data-projects="all"]').forEach((grid) => { grid.innerHTML = projects.map(card).join(''); });
+const projectGrid = document.querySelector('[data-projects="all"]');
+if (projectGrid) {
+  projectGrid.innerHTML = projects.map(card).join('');
+  const cards = [...projectGrid.querySelectorAll('.portfolio-card')];
+  const toolbar = document.querySelector('[data-portfolio-toolbar]');
+  const filters = [...toolbar.querySelectorAll('[data-filter]')];
+  const count = toolbar.querySelector('[data-portfolio-count]');
+  const url = new URL(location.href);
 
-document.querySelectorAll('.filter-button').forEach((button) => button.addEventListener('click', () => {
-  const active = button.dataset.filter;
-  document.querySelectorAll('.filter-button').forEach((item) => { const selected = item === button; item.classList.toggle('is-active', selected); item.setAttribute('aria-pressed', String(selected)); });
-  document.querySelectorAll('.all-projects .project-card').forEach((item) => { item.hidden = active !== 'all' && item.dataset.category !== active; });
-}));
+  const setFilter = (active, updateUrl = false) => {
+    let visible = 0;
+    for (const filter of filters) {
+      filter.setAttribute('aria-pressed', String(filter.dataset.filter === active));
+    }
+    for (const item of cards) {
+      item.hidden = active !== 'all' && item.dataset.category !== active;
+      if (!item.hidden) visible += 1;
+    }
+    count.textContent = `${visible} ${visible === 1 ? 'project' : 'projects'}`;
+    if (updateUrl && (url.protocol === 'https:' || url.protocol === 'http:')) {
+      if (active === 'all') url.searchParams.delete('type');
+      else url.searchParams.set('type', active);
+      history.replaceState(null, '', url);
+    }
+  };
+
+  const selection = url.searchParams.get('type');
+  setFilter(filters.some((filter) => filter.dataset.filter === selection) ? selection : 'all');
+  filters.forEach((filter) => filter.addEventListener('click', () => setFilter(filter.dataset.filter, true)));
+  toolbar.hidden = false;
+}
+
+function setupGallery(page, project) {
+  const galleryLink = page.querySelector('[data-gallery-link]');
+  const galleryCount = page.querySelector('[data-gallery-count]');
+  const galleryStatus = page.querySelector('[data-gallery-status]');
+  const grid = page.querySelector('[data-gallery-grid]');
+  const retry = page.querySelector('[data-gallery-retry]');
+  const viewer = page.querySelector('[data-gallery-viewer]');
+  const viewerImage = viewer.querySelector('[data-viewer-image]');
+  const viewerError = viewer.querySelector('[data-viewer-error]');
+  const position = viewer.querySelector('[data-viewer-position]');
+  const previous = viewer.querySelector('[data-viewer-previous]');
+  const next = viewer.querySelector('[data-viewer-next]');
+  const stage = viewer.querySelector('[data-viewer-stage]');
+  const close = viewer.querySelector('[data-viewer-close]');
+  let files = [];
+  let current = 0;
+  let opener;
+  let touchStart;
+
+  viewer.querySelector('[data-viewer-title]').textContent = project.title;
+
+  const showImage = (index) => {
+    current = (index + files.length) % files.length;
+    viewerError.hidden = true;
+    viewerImage.hidden = false;
+    viewerImage.alt = `${project.title}, view ${current + 1}`;
+    viewerImage.src = files[current];
+    position.textContent = `Image ${current + 1} of ${files.length}`;
+  };
+
+  if (typeof viewer.showModal === 'function') {
+    grid.addEventListener('click', (event) => {
+      const link = event.target.closest('[data-gallery-index]');
+      if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      opener = link;
+      showImage(Number(link.dataset.galleryIndex));
+      viewer.showModal();
+    });
+    viewer.addEventListener('close', () => opener?.focus({ preventScroll: true }));
+    viewer.addEventListener('click', (event) => {
+      if (event.target === viewer) viewer.close();
+    });
+    viewer.addEventListener('keydown', (event) => {
+      if (files.length < 2) return;
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        showImage(current + (event.key === 'ArrowLeft' ? -1 : 1));
+      }
+    });
+    close.addEventListener('click', () => viewer.close());
+    previous.addEventListener('click', () => showImage(current - 1));
+    next.addEventListener('click', () => showImage(current + 1));
+    viewerImage.addEventListener('error', () => {
+      viewerImage.hidden = true;
+      viewerError.hidden = false;
+    });
+    stage.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'touch' && event.isPrimary) {
+        touchStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      }
+    });
+    stage.addEventListener('pointercancel', () => { touchStart = null; });
+    stage.addEventListener('pointerup', (event) => {
+      if (!touchStart || touchStart.id !== event.pointerId || files.length < 2) return;
+      const dx = event.clientX - touchStart.x;
+      const dy = event.clientY - touchStart.y;
+      touchStart = null;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > 1.35 * Math.abs(dy)) showImage(current + (dx > 0 ? -1 : 1));
+    });
+  }
+
+  async function loadGallery() {
+    retry.hidden = true;
+    grid.setAttribute('aria-busy', 'true');
+    galleryStatus.textContent = 'Loading project images…';
+    galleryStatus.hidden = false;
+    try {
+      const response = await fetch('galleries.json');
+      if (!response.ok) throw new Error('Gallery unavailable');
+      const galleries = await response.json();
+      files = (galleries[project.number] || []).map((file) => file.replace(/\.heic$/i, '.webp'));
+      const thumbnails = files.map((file, index) => {
+        const link = document.createElement('a');
+        link.className = 'case-gallery-thumb';
+        link.href = file;
+        link.dataset.galleryIndex = index;
+        link.setAttribute('aria-label', `View image ${index + 1} of ${files.length}`);
+
+        const image = document.createElement('img');
+        image.src = file;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+
+        const expand = document.createElement('span');
+        expand.className = 'case-gallery-expand';
+        expand.setAttribute('aria-hidden', 'true');
+        expand.textContent = '↗';
+        link.append(image, expand);
+        return link;
+      });
+      grid.replaceChildren(...thumbnails);
+      if (files.length) {
+        galleryCount.textContent = `${files.length} ${files.length === 1 ? 'image' : 'images'}`;
+        previous.hidden = next.hidden = files.length === 1;
+        galleryLink.hidden = false;
+        galleryStatus.hidden = true;
+      } else {
+        galleryStatus.textContent = 'Additional images are currently unavailable for this project.';
+      }
+    } catch {
+      galleryStatus.textContent = 'The project gallery could not load.';
+      retry.hidden = false;
+    } finally {
+      grid.removeAttribute('aria-busy');
+    }
+  }
+
+  retry.addEventListener('click', loadGallery);
+  void loadGallery();
+}
 
 const detailPage = document.querySelector('[data-project-detail]');
 if (detailPage) {
-  const project = projects.find((item) => item.slug === new URLSearchParams(location.search).get('slug')) || projects[0];
-  document.title = `${project.title} | Nolawi Architects`;
-  detailPage.querySelector('[data-project-title]').textContent = project.title;
-  detailPage.querySelector('[data-project-type]').textContent = project.category;
-  detailPage.querySelector('[data-project-place]').textContent = project.place;
-  detailPage.querySelector('[data-project-summary]').textContent = project.summary;
-  detailPage.querySelector('[data-project-detail-text]').textContent = (projectLongDetails[project.slug] || [project.detail]).join('\n\n');
-  const facts = projectFacts[project.slug] || { client: 'Private client', service: project.category };
-  detailPage.querySelector('[data-project-client]').textContent = facts.client;
-  detailPage.querySelector('[data-project-service]').textContent = facts.service;
-  const image = detailPage.querySelector('[data-project-image]'); image.src = project.image; image.alt = project.alt;
-  detailPage.querySelector('[data-project-inquiry]').href = `contact.html?project=${encodeURIComponent(project.title)}`;
-  fetch('galleries.json').then((response) => {
-    if (!response.ok) throw new Error('Gallery unavailable');
-    return response.json();
-  }).then((galleries) => {
-    const files = galleries[project.number] || [];
-    const section = document.createElement('section');
-    section.className = 'project-gallery';
-    const heading = document.createElement('h2');
-    heading.className = 'display';
-    heading.textContent = 'Project gallery';
-    section.append(heading);
-    const grid = document.createElement('div');
-    grid.className = 'gallery-grid';
-    files.forEach((originalFile, index) => {
-      const file = originalFile === 'assets/galleries/06/005.heic' ? 'assets/galleries/06/005.webp' : originalFile;
-      const link = document.createElement('a');
-      link.href = file;
-      if (/\.(jpe?g|png|webp|gif)$/i.test(file)) {
-        const image = document.createElement('img');
-        image.src = file;
-        image.loading = 'lazy';
-        image.alt = `${project.title}, view ${index + 1}`;
-        link.append(image);
-      } else {
-        link.className = 'gallery-download';
-        link.textContent = `Download project file ${index + 1}`;
-        link.setAttribute('download', '');
-      }
-      grid.append(link);
+  const slug = new URLSearchParams(location.search).get('slug');
+  const project = slug ? projects.find((item) => item.slug === (slug === 'bihere-tsige' ? 'divine-entrance' : slug)) : projects[0];
+
+  if (!project) {
+    document.title = 'Project not found | Nolawi Architects';
+    detailPage.querySelector('[data-project-unavailable]').hidden = false;
+  } else {
+    document.title = `${project.title} | Nolawi Architects`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', project.summary);
+    detailPage.querySelector('[data-project-title]').textContent = project.title;
+    detailPage.querySelector('[data-project-type]').textContent = project.category;
+    detailPage.querySelector('[data-project-place]').textContent = project.place;
+    detailPage.querySelector('[data-project-summary]').textContent = project.summary;
+
+    const paragraphs = (projectLongDetails[project.slug] || [project.detail]).map((copy) => {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = copy;
+      return paragraph;
     });
-    section.append(grid);
-    detailPage.append(section);
-  }).catch(() => {
-    const message = document.createElement('p');
-    message.className = 'project-gallery';
-    message.textContent = 'The project gallery could not be loaded. Please refresh the page.';
-    detailPage.append(message);
-  });
+    detailPage.querySelector('[data-project-detail-text]').append(...paragraphs);
+
+    const facts = projectFacts[project.slug] || { client: 'Private client', service: project.category };
+    detailPage.querySelector('[data-project-client]').textContent = facts.client;
+    detailPage.querySelector('[data-project-service]').textContent = facts.service;
+
+    const image = detailPage.querySelector('[data-project-image]');
+    image.src = project.image;
+    image.alt = project.alt;
+    detailPage.querySelector('[data-project-inquiry]').href = `contact.html?project=${encodeURIComponent(project.title)}`;
+
+    const nextProject = projects[(projects.indexOf(project) + 1) % projects.length];
+    detailPage.querySelector('[data-next-project]').href = projectHref(nextProject);
+    detailPage.querySelector('[data-next-category]').textContent = nextProject.category;
+    detailPage.querySelector('[data-next-title]').textContent = nextProject.title;
+    detailPage.querySelector('[data-next-image]').src = nextProject.image;
+    detailPage.querySelector('[data-case-study]').hidden = false;
+    setupGallery(detailPage, project);
+  }
 }
 
-const projectName = new URLSearchParams(location.search).get('project');
-if (projectName) { const note = document.querySelector('[data-project-note]'); if (note) note.textContent = `Tell us about ${projectName}.`; document.querySelectorAll('[data-project-email]').forEach((link) => { link.href = `mailto:nolawiarchitects@gmail.com?${new URLSearchParams({subject:`Project enquiry: ${projectName}`})}`; }); }
-
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.classList.add('has-motion');
-  const scrollImages = [...document.querySelectorAll('.hero-visual img, .studio-photo img, .project-hero img')];
-  const sections = [...document.querySelectorAll('main > section:not(.hero)')];
-  let ticking = false;
-  const updateMotion = () => {
-    scrollImages.forEach((image) => {
-      const rect = image.parentElement.getBoundingClientRect();
-      const shift = Math.max(-16, Math.min(16, (window.innerHeight / 2 - (rect.top + rect.height / 2)) * .045));
-      image.style.setProperty('--scroll-shift', `${shift}px`);
-    });
-    const availableScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    document.documentElement.style.setProperty('--page-progress', String(Math.min(1, window.scrollY / availableScroll)));
-    ticking = false;
-  };
-  const requestMotionUpdate = () => {
-    if (!ticking) { requestAnimationFrame(updateMotion); ticking = true; }
-  };
-  updateMotion();
-  window.addEventListener('scroll', requestMotionUpdate, { passive: true });
-  window.addEventListener('resize', requestMotionUpdate, { passive: true });
-  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.target.classList.toggle('is-inview', entry.isIntersecting)), { threshold: .08 });
-  sections.forEach((section) => observer.observe(section));
+const requestedProject = new URLSearchParams(location.search).get('project');
+const contactProject = projects.find(({ title }) => title === requestedProject);
+if (contactProject) {
+  const note = document.querySelector('[data-project-note]');
+  if (note) note.textContent = 'Interested in a project like ' + contactProject.title + '? Tell us what you have in mind.';
+  const subject = encodeURIComponent('Project enquiry: ' + contactProject.title);
+  document.querySelectorAll('[data-project-email]').forEach((link) => {
+    link.href = 'mailto:nolawiarchitects@gmail.com?subject=' + subject;
+  });
 }

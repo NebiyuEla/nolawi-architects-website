@@ -1,1 +1,118 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f1e9"><meta name="description" content="A Nolawi Architects project."><title>Project | Nolawi Architects</title><link rel="stylesheet" href="styles.css?build=20261125r1"><script src="script.js?build=20261125r1" defer></script></head><body id="top"><header class="site-header"><a class="brand" href="index.html" aria-label="Nolawi Architects home"><img src="assets/logo.webp" alt="Nolawi Architects"></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation"><span></span><span></span></button><nav class="site-nav" id="site-nav" aria-label="Primary"><a href="work.html" aria-current="page">Work</a><a href="studio.html">Studio</a><a href="services.html">Services</a><a class="nav-cta" href="contact.html">Start a project <span>↗</span></a></nav></header><main data-project-detail><section class="project-header"><p class="eyebrow"><span data-project-type></span> / <span data-project-place></span></p><h1 class="display" data-project-title>Selected project</h1><div class="project-summary"><p data-project-summary></p><a class="text-link" href="work.html">All work <span>↗</span></a></div></section><figure class="project-hero"><img data-project-image src="assets/eden-house.webp" alt="Selected Nolawi project"></figure><section class="project-copy"><p class="section-no">Project overview</p><div><dl class="project-facts"><div><dt>Client</dt><dd data-project-client></dd></div><div><dt>Service</dt><dd data-project-service></dd></div></dl><p data-project-detail-text></p><a class="button" data-project-inquiry href="contact.html">Ask about a similar project <span>↗</span></a></div></section></main><footer class="site-footer"><a class="footer-wordmark" href="index.html">NOLAWI<sup>®</sup></a><span>Architecture, interiors, delivery.</span><span>Addis Ababa, Ethiopia</span><a class="to-top" href="#top">Back to top ↑</a></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f2eb">
+  <meta name="description" content="Project overview, design details and gallery from Nolawi Architects.">
+  <title>Project | Nolawi Architects</title>
+  <link rel="icon" href="assets/nolawi-favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+  <link rel="stylesheet" href="styles.css?v=20261125-2">
+  <link rel="stylesheet" href="portfolio.css?v=20261125-2">
+  <script src="script.js?v=20261125-2" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <div class="shell site-header-inner">
+      <a class="brand" href="index.html" aria-label="Nolawi Architects home">
+        <img src="assets/nolawi-icon-white.png" width="43" height="43" alt="">
+        <span class="brand-type">Nolawi <small>Architects</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden>
+        <span class="menu-label">Menu</span><span class="menu-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="work.html" aria-current="page">Work</a>
+        <a href="studio.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a class="nav-cta" href="contact.html">Start a project <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main class="case-study" data-project-detail id="main-content" tabindex="-1">
+    <div data-case-study hidden>
+      <section class="case-header shell" aria-labelledby="project-title">
+        <a class="case-back" href="work.html"><span aria-hidden="true">←</span> All work</a>
+        <div class="case-intro">
+          <div>
+            <p class="eyebrow case-kicker"><span data-project-type></span><span aria-hidden="true">/</span><span data-project-place></span></p>
+            <h1 class="display" id="project-title" data-project-title></h1>
+          </div>
+          <div class="case-lead">
+            <p data-project-summary></p>
+            <a class="case-gallery-link" href="#project-gallery" data-gallery-link hidden>View gallery <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+      </section>
+      <figure class="case-cover shell">
+        <img data-project-image alt="" fetchpriority="high" decoding="async">
+      </figure>
+      <section class="case-overview shell" aria-labelledby="overview-heading">
+        <div class="case-overview-label"><h2 class="display" id="overview-heading">Project overview</h2></div>
+        <div class="case-overview-body">
+          <dl class="case-facts">
+            <div><dt>Client</dt><dd data-project-client></dd></div>
+            <div><dt>Services</dt><dd data-project-service></dd></div>
+          </dl>
+          <div class="case-prose" data-project-detail-text></div>
+          <a class="text-link case-inquiry" data-project-inquiry href="contact.html">Discuss a similar project <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+      <section class="case-gallery" id="project-gallery" aria-labelledby="gallery-heading">
+        <div class="shell">
+          <div class="case-gallery-header">
+            <h2 class="display" id="gallery-heading">Project gallery</h2>
+            <p data-gallery-count></p>
+          </div>
+          <p class="case-gallery-status" data-gallery-status role="status" hidden></p>
+          <div class="case-gallery-grid" data-gallery-grid></div>
+          <button class="portfolio-filter" type="button" data-gallery-retry hidden>Retry loading gallery</button>
+        </div>
+      </section>
+      <section class="case-next shell" aria-labelledby="next-project-heading">
+        <h2 class="eyebrow" id="next-project-heading">Next project</h2>
+        <a class="case-next-link" data-next-project href="work.html">
+          <span class="case-next-copy"><span class="case-next-category" data-next-category></span><span class="display" data-next-title></span></span>
+          <img data-next-image alt="" loading="lazy" decoding="async">
+          <span class="case-next-arrow" aria-hidden="true">↗</span>
+        </a>
+      </section>
+      <dialog class="gallery-viewer" aria-labelledby="viewer-title" data-gallery-viewer>
+        <div class="gallery-viewer-inner">
+          <div class="gallery-viewer-top">
+            <h2 id="viewer-title" data-viewer-title></h2>
+            <button class="gallery-viewer-button" type="button" data-viewer-close aria-label="Close photo viewer" autofocus>×</button>
+          </div>
+          <div class="gallery-viewer-stage" data-viewer-stage>
+            <img data-viewer-image alt="">
+            <p data-viewer-error hidden>This image could not be loaded.</p>
+          </div>
+          <div class="gallery-viewer-controls">
+            <button class="gallery-viewer-button" type="button" data-viewer-previous aria-label="Previous image">←</button>
+            <p data-viewer-position role="status" aria-live="polite" aria-atomic="true"></p>
+            <button class="gallery-viewer-button" type="button" data-viewer-next aria-label="Next image">→</button>
+          </div>
+        </div>
+      </dialog>
+    </div>
+    <section class="case-unavailable shell" data-project-unavailable hidden>
+      <p class="eyebrow">Portfolio</p>
+      <h1 class="display">Project not found.</h1>
+      <p>The link may be out of date. Find the project in our portfolio.</p>
+      <a class="button" href="work.html">Browse all work <span aria-hidden="true">↗</span></a>
+    </section>
+    <noscript><p class="shell">Enable JavaScript to view this project. <a href="work.html">Back to all work</a></p></noscript>
+  </main>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-address"><a class="brand" href="index.html" aria-label="Nolawi Architects home"><img src="assets/nolawi-icon-white.png" width="43" height="43" alt=""><span class="brand-type">Nolawi <small>Architects</small></span></a><p>Addis Ababa, Ethiopia</p></div>
+      <nav class="footer-nav" aria-label="Footer"><a href="work.html">Work</a><a href="studio.html">About Us</a><a href="services.html">Services</a><a href="contact.html">Contact</a></nav>
+      <a class="to-top text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>
