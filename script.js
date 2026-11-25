@@ -4,6 +4,14 @@ favicon.type = 'image/png';
 favicon.href = 'assets/nolawi-favicon.png';
 if (!favicon.parentElement) document.head.append(favicon);
 
+const skipLink = document.createElement('a');
+skipLink.className = 'skip-link';
+skipLink.href = '#main-content';
+skipLink.textContent = 'Skip to main content';
+document.body.prepend(skipLink);
+const mainContent = document.querySelector('main');
+if (mainContent && !mainContent.id) mainContent.id = 'main-content';
+
 document.querySelectorAll('.site-header').forEach((header) => {
   const aboutLink = header.querySelector('a[href="studio.html"]');
   if (aboutLink) aboutLink.textContent = 'About Us';
@@ -23,6 +31,7 @@ if (menuButton && navigation) {
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
     navigation.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
   };
   menuButton.addEventListener('click', () => setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true'));
   navigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
@@ -77,6 +86,80 @@ const projectFacts = {
   'ibn-office': { client: 'IBN Import Export', service: 'Interior design' },
   'outdoor-bar': { client: 'Private client', service: 'Interior design' }
 };
+
+const projectLongDetails = {
+  'hope-haven': [
+    `Hope Haven is a versatile youth centre for Finote Birhan Sunday School in Addis Ababa, Ethiopia. The main auditorium extends from the ground floor into the semi-basement, while the upper floors contain smaller halls, gathering spaces, classrooms, IT rooms, a library and workshops. The building is being constructed on a 750-square-metre site.`,
+    `The site has a considerable slope, so the design incorporates the natural level change into the auditorium seating and circulation. Accessibility and seamless movement between functional zones create a dynamic flow throughout the building, while strategically placed openings maximise natural light and ventilation.`,
+    `The exterior combines concrete and wood with large glass panels to express transparency and openness. A grand arched entrance creates a welcoming arrival, and landscaped gardens, pathways and outdoor gathering areas encourage social interaction and connection with nature. The overall composition balances function and aesthetics to create an inspiring place for youth engagement and creativity.`
+  ],
+  'commercial-pair': [
+    `This project comprises two consecutive commercial buildings for Bihere Tsige St. Mary Church, positioned in front of a school compound in Addis Ababa. The objective is to create functional and attractive rental units that generate income for the church while serving the surrounding community.`,
+    `The first building occupies a 400-square-metre plot and the second a 225-square-metre plot. Both use a G+3 configuration to maximise commercial capacity. Their location benefits from strong visibility and foot traffic from the school and neighbourhood.`,
+    `Banks and cafés activate the ground floors, while the upper levels provide offices, studios and flexible rental spaces for different tenants. Natural light and ventilation are prioritised through carefully placed openings. Conventional materials and modern detailing give the façades a simple, functional character that responds to the surrounding urban context.`
+  ],
+  'timeless-fusion': [
+    `Timeless Fusion is a nine-storey G+8 apartment building that combines modern and classical architecture. Clean contemporary lines and open spaces are paired with traditional materials and carefully considered classical detailing, creating a distinctive identity with broad appeal.`,
+    `Stone cladding and a glass façade give the building a strong urban presence. Efficient layouts, integrated amenities and sustainable features support contemporary living, while the exterior architectural language continues into the interior spaces to create a coherent experience throughout the building.`
+  ],
+  'divine-entrance': [
+    `The church gate is designed to blend with the architectural identity of Bihere Tsige St. Mary Church. Existing arches, domes, ornamentation, proportions and materials inform the new design so that it respects the cathedral's heritage while introducing a functional entrance.`,
+    `A sense of structural weight communicates protection, emphasis and respect. Robust stone elements and a substantial frame create permanence and make the gate a guardian of the sacred space. Natural finishes are intended to age gracefully, while wide openings and carefully placed decoration preserve clear, accessible movement for everyone.`
+  ],
+  'ene-misrak': [
+    `This ten-storey G+9 mixed-use building with a rooftop terrace is envisioned as a contemporary urban landmark. Clean geometric forms, white exterior finishes, dark vertical accents and expansive glazing create a sophisticated composition that balances solid surfaces with transparency.`,
+    `Floor-to-ceiling glazing on the lower levels strengthens the connection between the interior and the city. Repetitive upper-floor windows and recessed balconies improve function and provide private outdoor space for residents. Integrated greenery softens the façade, while the rooftop terrace offers an additional place for relaxation and leisure. The project brings together architectural elegance, practical planning and modern material expression for contemporary residential and commercial use.`
+  ],
+  'elevated-living': [
+    `This G+2 residence in Addis Ababa expresses contemporary luxury through an open-plan organisation that supports fluid movement and visual connection. Large glazed openings frame views, increase natural light and strengthen the relationship between indoor and outdoor spaces.`,
+    `Premium materials, refined detailing and neutral tones define the exterior. Modern geometry and textured plaster finishes create a sophisticated façade that remains connected to its local context. The ground floor contains the main living, dining and entertainment areas, organised around a feature staircase. Private suites with balconies occupy the upper floors, while the second floor includes a self-contained two-bedroom apartment for rental use.`
+  ],
+  'elegant-living': [
+    `This four-bedroom apartment interior for Mr. Iyasu Addisu and Tracon Real Estate is defined by off-white tones, warm timber and soft cream hues. An open-plan layout improves light and spaciousness, while elegant finishes and refined detailing create a calm, sophisticated atmosphere. The bedrooms combine comfort and practical planning to support the needs of a large family.`
+  ],
+  'elevated-living-interior': [
+    `The interior of this G+2 residence draws on Scandinavian and Japandi design. White surfaces and natural timber tones create a serene, minimalist atmosphere, while the open plan improves light and spatial flow. Warm textures and carefully controlled details balance simplicity with comfort and give the home a refined contemporary character.`
+  ],
+  'cedar-condominium': [
+    `This three-bedroom condominium renovation combines classical and modern influences with an emphasis on clean lines, openness and function. White, grey and earth tones make the home feel bright and spacious, while the open plan connects the living, dining and corridor areas through a consistent material language.`
+  ],
+  'kitchen-residence': [
+    `This modern residential kitchen is organised around a central island and a clean white-and-brown palette. Aluminium-framed glass doors, integrated lighting and carefully planned storage create an interior that is bright, elegant and practical for everyday use.`
+  ],
+  'rental-apartment': [
+    `The apartment is designed as a stylish, comfortable and functional rental home. Clean lines, neutral colours, contemporary finishes and coordinated materials create a timeless atmosphere that can appeal to a broad range of tenants.`,
+    `Each space maximises efficiency and comfort while maintaining one visual identity throughout the apartment. Modern lighting, practical storage, durable materials and carefully selected furniture create an elegant, low-maintenance and move-in-ready home that supports both rental appeal and long-term value.`
+  ],
+  'brew-bloom': [
+    `Located in the 4 Kilo area, this one-bedroom interior uses a minimalist modern approach focused on simplicity, function and efficient use of space. A clean white palette is combined with warm tones, natural textures and carefully selected materials to create a calm and welcoming environment.`,
+    `Thoughtful planning, functional furniture and smart storage make full use of the available area. Minimal detailing and a consistent material palette preserve openness and visual harmony, resulting in a practical and comfortable interior that balances modern simplicity with warmth.`
+  ],
+  'ebo-bizztech': [
+    `This creative technology office for EBO BizzTech Solutions PLC is located in the Meskel Flower area. The interior is designed as a modern, dynamic and collaborative workplace. Green, orange and white elements carry the company's brand identity into the finishes, furniture and decoration while maintaining a professional atmosphere.`,
+    `The layout includes a six-person open workstation, two dedicated management desks and a welcoming guest area. Efficient use of space, contemporary furniture, geometric forms, planned lighting and selected decorative details create a cohesive workplace that supports collaboration and reflects the identity of a growing technology company.`
+  ],
+  'airport-office': [
+    `This interior-design bid for the Customs Commission Addis Ababa Airport Branch includes a general manager's office with a modern, luxurious character. Existing furniture is integrated into the new palette, and alternative treatments were developed for the bathroom wall to conceal the door and create a seamless appearance.`,
+    `Two conference rooms were also designed with clean lines and functional simplicity. The central display and stage are visually framed for clear visibility, and display sizes are selected according to the dimensions of each room.`
+  ],
+  'vibrant-space': [
+    `Located in the Lebu Gabriel area, this printing and advertising shop combines customer-facing areas with a functional production workshop in a compact space. Smart planning, efficient storage and multifunctional elements make use of every available square metre.`,
+    `The layout includes a reception counter, product displays, customer seating and a dedicated printing and production area. Contemporary finishes, practical furniture and integrated storage maintain an efficient workflow while creating an organised, professional and welcoming commercial interior.`
+  ],
+  'ibn-office': [
+    `This managerial office for IBN Import Export is designed to feel professional, modern and refined. Natural timber and light grey finishes introduce warmth, dependability and authenticity, while the coordinated palette and detailing create a graceful, luxurious executive environment.`
+  ],
+  'outdoor-bar': [
+    `This outdoor bar and dining area for a private client combines contemporary design with natural materials. Clean lines and modern finishes are balanced by timber, glass and greenery, creating a warm setting for dining and entertaining with a strong connection to nature.`
+  ]
+};
+
+const generalObjectives = document.querySelector('.objective-columns > div:first-child ul');
+if (generalObjectives && !generalObjectives.textContent.includes('strong reputation')) {
+  const objective = document.createElement('li');
+  objective.textContent = 'Establish a strong reputation as a reliable, competitive and client-focused consultancy.';
+  generalObjectives.append(objective);
+}
 
 /* A single hero controller shared by desktop, tablet and mobile. The first
    project renders without JavaScript; the remaining images load on demand. */
@@ -223,7 +306,7 @@ if (detailPage) {
   detailPage.querySelector('[data-project-type]').textContent = project.category;
   detailPage.querySelector('[data-project-place]').textContent = project.place;
   detailPage.querySelector('[data-project-summary]').textContent = project.summary;
-  detailPage.querySelector('[data-project-detail-text]').textContent = project.detail;
+  detailPage.querySelector('[data-project-detail-text]').textContent = (projectLongDetails[project.slug] || [project.detail]).join('\n\n');
   const facts = projectFacts[project.slug] || { client: 'Private client', service: project.category };
   detailPage.querySelector('[data-project-client]').textContent = facts.client;
   detailPage.querySelector('[data-project-service]').textContent = facts.service;
