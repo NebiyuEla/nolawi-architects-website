@@ -1,13 +1,7 @@
 .contact-page {
-  --contact-ink: #191c18;
-  --contact-muted: #53584d;
-  --contact-line: #cfccbf;
-  --contact-paper: #f5f2eb;
-  --contact-tint: #e4e8d1;
-  --contact-rust: #904c36;
   padding-bottom: clamp(4.5rem, 9vw, 9rem);
-  background: var(--contact-paper);
-  color: var(--contact-ink);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .contact-intro {
@@ -16,12 +10,12 @@
   align-items: end;
   gap: clamp(2rem, 6vw, 6rem);
   padding-block: clamp(3.5rem, 7vw, 7.5rem) clamp(2rem, 5vw, 4.5rem);
-  border-bottom: 1px solid var(--contact-line);
+  border-bottom: 1px solid var(--line);
 }
 
 .contact-intro .eyebrow {
   margin-bottom: 1.2rem;
-  color: var(--contact-rust);
+  color: var(--clay);
 }
 
 .contact-intro h1 {
@@ -31,7 +25,7 @@
 }
 
 .contact-intro h1 em {
-  color: var(--contact-rust);
+  color: var(--clay);
 }
 
 .contact-intro-copy {
@@ -46,7 +40,7 @@
 
 .contact-intro-copy p + p {
   margin-top: .85rem;
-  color: var(--contact-muted);
+  color: var(--quiet);
   line-height: 1.6;
 }
 
@@ -66,7 +60,7 @@
 
 .contact-details {
   margin: clamp(1.5rem, 4vw, 3rem) 0 0;
-  border-top: 1px solid var(--contact-line);
+  border-top: 1px solid var(--line);
 }
 
 .contact-detail {
@@ -75,11 +69,11 @@
   align-items: baseline;
   gap: .45rem clamp(.5rem, 3vw, 2rem);
   padding-block: 1rem;
-  border-bottom: 1px solid var(--contact-line);
+  border-bottom: 1px solid var(--line);
 }
 
 .contact-detail dt {
-  color: var(--contact-muted);
+  color: var(--quiet);
   font-size: .72rem;
   font-weight: 650;
   letter-spacing: .09em;
@@ -100,7 +94,7 @@
 }
 
 .contact-detail a:hover {
-  color: var(--contact-rust);
+  color: var(--clay);
   text-decoration-color: currentColor;
 }
 
@@ -127,13 +121,13 @@
   width: 2.55rem;
   height: 2.55rem;
   place-items: center;
-  border: 1px solid var(--contact-line);
+  border: 1px solid var(--line);
   border-radius: 50%;
   font-size: 1.15rem;
 }
 
 .contact-email-link:hover .contact-email-arrow {
-  border-color: var(--contact-rust);
+  border-color: var(--clay);
 }
 
 .contact-phone {
@@ -148,7 +142,7 @@
 }
 
 .contact-visit {
-  background: var(--contact-tint);
+  background: var(--sand);
 }
 
 .contact-visit-image {
@@ -173,7 +167,7 @@
 
 .contact-visit-content p {
   margin-top: .8rem;
-  color: var(--contact-muted);
+  color: var(--quiet);
   font-size: .87rem;
 }
 

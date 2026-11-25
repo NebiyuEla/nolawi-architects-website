@@ -144,6 +144,8 @@ if (hero) {
   const link = hero.querySelector('[data-hero-link]');
   const toggle = hero.querySelector('[data-hero-motion]');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const slideDuration = 10000;
+  const fadeDuration = 1400;
   let current = 0;
   let timer;
   let inView = true;
@@ -174,11 +176,14 @@ if (hero) {
       if (!canRotate()) break;
       const project = projects.find(({ slug }) => slug === slides[candidate].dataset.project);
       if (!project) continue;
-      slides[current].classList.remove('is-active');
+      const outgoing = slides[current];
+      outgoing.classList.replace('is-active', 'is-leaving');
       slides[candidate].classList.add('is-active');
+      setTimeout(() => outgoing.classList.remove('is-leaving'), fadeDuration + 100);
       current = candidate;
       title.textContent = project.title;
       link.href = 'project.html?slug=' + encodeURIComponent(project.slug);
+      void loadSlide((current + 1) % slides.length);
       break;
     }
     schedule();
@@ -186,11 +191,15 @@ if (hero) {
 
   function schedule() {
     clearTimeout(timer);
-    if (canRotate() && slides.length > 1) timer = setTimeout(showNext, 6500);
+    const rotationAllowed = canRotate();
+    hero.classList.toggle('is-motion-paused', !rotationAllowed);
+    if (rotationAllowed && slides.length > 1) timer = setTimeout(showNext, slideDuration);
   }
 
   function updateMotionPreference() {
     toggle.hidden = reducedMotion.matches || slides.length < 2;
+    hero.classList.toggle('is-rotating', !toggle.hidden);
+    if (!toggle.hidden && slides[current].complete) void loadSlide((current + 1) % slides.length);
     schedule();
   }
 
@@ -206,6 +215,9 @@ if (hero) {
     });
     link.addEventListener('pointerenter', schedule);
     link.addEventListener('pointerleave', schedule);
+    slides[0].addEventListener('load', () => {
+      if (!reducedMotion.matches) void loadSlide(1);
+    }, { once: true });
     document.addEventListener('visibilitychange', schedule);
     reducedMotion.addEventListener('change', updateMotionPreference);
     if ('IntersectionObserver' in window) {
