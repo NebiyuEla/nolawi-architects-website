@@ -779,6 +779,9 @@ body { background:var(--paper); }
 @media (min-width:961px) { .page-intro { min-height:480px; padding-block:100px 75px; } }
 @media (max-width:640px) { .filter-bar { gap:4px; } .filter-button { font-size:11px; padding:10px 8px; } }
 
+/* The hero rotates automatically; manual controls are intentionally hidden. */
+.hero-slider-controls { display:none !important; }
+
 /* Expanded company profile and package content from the studio brief. */
 .story-section,.objectives-section { display:grid; grid-template-columns:.65fr 1.35fr; gap:8vw; padding:clamp(70px,9vw,125px) var(--edge); border-top:1px solid var(--line); }
 .story-heading h2,.objectives-section h2 { margin-top:18px; font-size:clamp(43px,5.4vw,78px); }

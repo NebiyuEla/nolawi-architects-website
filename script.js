@@ -5,6 +5,8 @@ favicon.href = 'assets/nolawi-favicon.png';
 if (!favicon.parentElement) document.head.append(favicon);
 
 document.querySelectorAll('.site-header').forEach((header) => {
+  const aboutLink = header.querySelector('a[href="studio.html"]');
+  if (aboutLink) aboutLink.textContent = 'About Us';
   if (header.querySelector('.header-title')) return;
   const title = document.createElement('a');
   title.className = 'header-title';
