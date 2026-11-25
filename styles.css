@@ -779,6 +779,45 @@ body { background:var(--paper); }
 @media (min-width:961px) { .page-intro { min-height:480px; padding-block:100px 75px; } }
 @media (max-width:640px) { .filter-bar { gap:4px; } .filter-button { font-size:11px; padding:10px 8px; } }
 
+/* Expanded company profile and package content from the studio brief. */
+.story-section,.objectives-section { display:grid; grid-template-columns:.65fr 1.35fr; gap:8vw; padding:clamp(70px,9vw,125px) var(--edge); border-top:1px solid var(--line); }
+.story-heading h2,.objectives-section h2 { margin-top:18px; font-size:clamp(43px,5.4vw,78px); }
+.story-copy { max-width:760px; }
+.story-copy p { margin-bottom:22px; font-size:clamp(18px,1.55vw,22px); line-height:1.6; }
+.purpose-section { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); background:#e7ebe6; }
+.purpose-section article { padding:clamp(52px,7vw,95px) var(--edge); }
+.purpose-section article + article { border-left:1px solid var(--line); }
+.purpose-section h2 { max-width:620px; margin:24px 0 18px; font-size:clamp(31px,3.6vw,53px); line-height:1.08; letter-spacing:-.045em; }
+.purpose-section p,.purpose-section li { max-width:660px; color:var(--coal); font-size:17px; }
+.purpose-section ul,.objective-columns ul,.package-card ul { margin:0; padding:0; list-style:none; }
+.purpose-section li,.objective-columns li,.package-card li { position:relative; padding:10px 0 10px 19px; border-bottom:1px solid var(--line); }
+.purpose-section li::before,.objective-columns li::before,.package-card li::before { position:absolute; left:0; content:'—'; color:var(--clay); }
+.objectives-section { background:var(--white); }
+.objective-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(30px,5vw,70px); }
+.objective-columns h3 { margin-bottom:16px; font-size:22px; }
+.objective-columns li { color:var(--coal); }
+.packages { padding:clamp(75px,9vw,125px) var(--edge); background:var(--white); }
+.packages-head { display:grid; grid-template-columns:.5fr 1fr .7fr; gap:5vw; align-items:end; margin-bottom:70px; }
+.packages-head h2 { font-size:clamp(44px,5vw,74px); }
+.packages-head > p:last-child { color:var(--quiet); }
+.package-group + .package-group { margin-top:80px; }
+.package-group-title { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:25px; padding-bottom:18px; border-bottom:1px solid var(--ink); }
+.package-group-title h3 { font-size:clamp(25px,3vw,40px); letter-spacing:-.04em; }
+.package-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.package-card { min-height:420px; padding:clamp(25px,3vw,40px); border:1px solid var(--line); background:var(--paper); }
+.package-card > span { color:var(--clay); font:700 11px/1.2 var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+.package-card h4 { margin:24px 0 28px; font-size:clamp(24px,2.4vw,35px); line-height:1.05; letter-spacing:-.04em; }
+.package-card li { color:var(--quiet); }
+.package-featured { color:#fff; background:#232c28; border-color:#232c28; }
+.package-featured > span,.package-featured li::before { color:#d9e1da; }
+.package-featured li { color:#e2e8e2; border-color:#59665d; }
+.project-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin:0 0 35px; padding:0; }
+.project-facts div { padding:16px 0; border-top:1px solid var(--line); }
+.project-facts dt { color:var(--quiet); font:700 11px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; }
+.project-facts dd { margin:8px 0 0; font-size:17px; }
+@media (max-width:900px) { .story-section,.objectives-section,.packages-head { grid-template-columns:1fr; } .purpose-section { grid-template-columns:1fr; } .purpose-section article + article { border-top:1px solid var(--line); border-left:0; } .package-grid { grid-template-columns:1fr; } .package-card { min-height:0; } }
+@media (max-width:640px) { .story-section,.objectives-section { gap:30px; padding-block:60px; } .objective-columns,.project-facts { grid-template-columns:1fr; } .purpose-section article { padding:55px var(--edge); } .packages-head { gap:22px; margin-bottom:48px; } .package-group + .package-group { margin-top:58px; } .package-group-title { align-items:start; flex-direction:column; } }
+
 /* Nolawi identity: ink, stone and white, drawn from the supplied mark. */
 :root { --paper:#f3f2ef; --white:#ffffff; --ink:#181a19; --coal:#343735; --quiet:#555c58; --line:#cfd2ce; --clay:#465c55; --sand:#e9ece8; }
 body,.statement,.work-page,.project-gallery,.principles,.project-copy { background:#f3f2ef; color:#181a19; }

@@ -56,6 +56,26 @@ const projects = [
   { slug:'outdoor-bar', number:'17', title:'Outdoor Bar and Dining', category:'Interiors', place:'Private residence', image:'assets/project-17.jpg', alt:'Outdoor Bar and Dining render', summary:'An open-air bar and dining setting that brings contemporary detail into a garden atmosphere.', detail:'Wood, glass, greenery and contemporary finishes create a relaxed space for hosting. The design is warm, practical and closely connected to the outdoors.' }
 ];
 
+const projectFacts = {
+  'hope-haven': { client: 'Finote Birhan Sunday School', service: 'Full design service' },
+  'commercial-pair': { client: 'Bihere Tsige St. Mary Church', service: 'Full design service' },
+  'timeless-fusion': { client: 'Mr. Tariku Bahiru', service: 'Full design service' },
+  'divine-entrance': { client: 'Bihere Tsige St. Mary Church', service: 'Full design service' },
+  'ene-misrak': { client: 'Ene Misrak', service: 'Full design service' },
+  'elevated-living': { client: 'Dr. Desalegn Ayalew', service: 'Full design, construction and finishing' },
+  'elegant-living': { client: 'Mr. Iyasu Addisu / Tracon Real Estate', service: 'Interior design, furnishing and finishing' },
+  'elevated-living-interior': { client: 'Dr. Desalegn Ayalew', service: 'Interior design, construction and finishing' },
+  'cedar-condominium': { client: 'Cedar Furniture', service: 'Interior design' },
+  'kitchen-residence': { client: 'Ato Wubsefer Mengistu', service: 'Interior design' },
+  'rental-apartment': { client: 'Mr. Abdi Mohamed', service: 'Interior design, furnishing and finishing' },
+  'brew-bloom': { client: 'Mr. Zelalem Birhanu', service: 'Interior design, finishing and furnishing' },
+  'ebo-bizztech': { client: 'EBO BizzTech Solutions PLC', service: 'Interior design, finishing and furnishing' },
+  'airport-office': { client: 'Customs Commission, Addis Ababa Airport Branch', service: 'Interior design bid' },
+  'vibrant-space': { client: 'Mr. Haile Esayas', service: 'Interior design, finishing and furnishing' },
+  'ibn-office': { client: 'IBN Import Export', service: 'Interior design' },
+  'outdoor-bar': { client: 'Private client', service: 'Interior design' }
+};
+
 /* A single hero controller shared by desktop, tablet and mobile. The first
    project renders without JavaScript; the remaining images load on demand. */
 const heroSlider = document.querySelector('[data-hero-slider]');
@@ -202,6 +222,9 @@ if (detailPage) {
   detailPage.querySelector('[data-project-place]').textContent = project.place;
   detailPage.querySelector('[data-project-summary]').textContent = project.summary;
   detailPage.querySelector('[data-project-detail-text]').textContent = project.detail;
+  const facts = projectFacts[project.slug] || { client: 'Private client', service: project.category };
+  detailPage.querySelector('[data-project-client]').textContent = facts.client;
+  detailPage.querySelector('[data-project-service]').textContent = facts.service;
   const image = detailPage.querySelector('[data-project-image]'); image.src = project.image; image.alt = project.alt;
   detailPage.querySelector('[data-project-inquiry]').href = `contact.html?project=${encodeURIComponent(project.title)}`;
   fetch('galleries.json').then((response) => {
